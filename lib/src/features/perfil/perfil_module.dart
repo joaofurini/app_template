@@ -16,7 +16,7 @@ class PerfilModule extends Module {
       Modular.initialRoute,
       child: (_, args) => RootLayout(
         currentIndex: 1,
-        child: ProfilePage(),
+        child: const ProfilePage(),
       ),
     ),
   ];

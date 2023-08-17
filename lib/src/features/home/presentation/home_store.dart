@@ -47,7 +47,9 @@ abstract class _HomeStore with Store {
 
   Future<void> getPosts() async {
     loading = true;
+
     posts = await getUsersUseCase.call();
+
     firstPost = posts?[0];
     loading = false;
   }
