@@ -1,10 +1,10 @@
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:app_template/src/shared/app_module.dart';
+import 'package:app_template/src/app_module.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-import 'src/shared/app.dart';
+import 'src/app.dart';
 
 Future setDesktopWindow() async {
   await DesktopWindow.setMinWindowSize(const Size(400, 400));

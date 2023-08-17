@@ -4,7 +4,7 @@ export 'bottom_bar.dart';
 export 'brightness_toggle.dart';
 export 'center_row.dart';
 export 'clickable.dart';
-export 'events.dart';
+
 export 'hover_toggle.dart';
 
 export 'image_card.dart';

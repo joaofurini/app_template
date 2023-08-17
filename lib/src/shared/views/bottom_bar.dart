@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../classes/classes.dart';
 import '../extensions.dart';
 
 import '../providers/providers.dart';
@@ -25,22 +24,19 @@ class BottomBar extends StatelessWidget implements PreferredSizeWidget {
 
 class _BottomBar extends StatelessWidget {
   const _BottomBar({
-    this.artist,
     this.isMuted,
     this.isPlaying,
     this.preferredSize,
     this.progress,
-    this.song,
     this.togglePlayPause,
     this.volume,
   });
 
-  final Artist? artist;
   final bool? isMuted;
   final bool? isPlaying;
   final Size? preferredSize;
   final Duration? progress;
-  final Song? song;
+
   final VoidCallback? togglePlayPause;
   final double? volume;
 
@@ -60,45 +56,13 @@ class _BottomBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Row(
-              children: [
-                _AlbumArt(song: song),
-                _SongDetails(
-                  artist: artist,
-                  song: song,
-                ),
-              ],
+              children: [],
             ),
-            if (song != null)
-              IconButton(
-                icon: const Icon(Icons.fullscreen),
-                onPressed: () {
-                  final overlay = Overlay.of(context);
-                  OverlayEntry? entry;
-                  entry = OverlayEntry(
-                    builder: (context) => Stack(
-                      children: [
-                        Positioned(
-                          child: _FullScreenPlayer(
-                            onClose: () {
-                              entry?.remove();
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                  overlay!.insert(entry);
-                },
-              ),
           ],
         ),
       ),
     );
   }
-
-  double get songProgress => progress != null && song != null
-      ? progress!.inMilliseconds / song!.length.inMilliseconds
-      : 0;
 
   Widget _buildMobileBar(BuildContext context, BoxConstraints constraints) {
     return ColoredBox(
@@ -128,37 +92,17 @@ class _BottomBar extends StatelessWidget {
           child: Stack(
             children: [
               Positioned(
-                left: 0,
-                right: 4,
-                bottom: 0,
-                child: LinearProgressIndicator(
-                  value: songProgress.clamp(0, 1),
-                  backgroundColor: Theme.of(context).colorScheme.tertiary,
-                  color: Theme.of(context).colorScheme.onTertiaryContainer,
-                ),
-              ),
-              Positioned(
                 left: 4,
                 bottom: 4,
                 top: 4,
                 right: 4,
                 child: Row(
                   children: [
-                    _AlbumArt(song: song),
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          song?.title ?? '',
-                          style: context.labelMedium,
-                        ),
-                        Text(
-                          song?.artist.name ?? '',
-                          style: context.labelSmall,
-                        ),
-                      ],
+                      children: [],
                     ),
                     const Spacer(),
                   ],
@@ -175,17 +119,10 @@ class _BottomBar extends StatelessWidget {
 class _ProgressBar extends StatelessWidget {
   const _ProgressBar({
     required this.progress,
-    required this.song,
   });
 
   /// Current playback depth into user is into [song].
   final Duration? progress;
-
-  final Song? song;
-
-  double get songProgress => progress != null && song != null
-      ? progress!.inMilliseconds / song!.length.inMilliseconds
-      : 0;
 
   @override
   Widget build(BuildContext context) {
@@ -208,26 +145,6 @@ class _ProgressBar extends StatelessWidget {
               SizedBox(
                 child: progress != null
                     ? Text(progress!.toHumanizedString(),
-                        style: Theme.of(context).textTheme.bodySmall)
-                    : const Text('-'),
-              ),
-              Expanded(
-                child: Slider(
-                  value: songProgress.clamp(0, 1),
-                  divisions: 1000,
-                  onChanged: (percent) {},
-                  onChangeEnd: (percent) {
-                    // Because dragging pauses auto playback, resume playing
-                    // once the user finishes dragging.
-                  },
-                  activeColor:
-                      Theme.of(context).colorScheme.onTertiaryContainer,
-                  inactiveColor: Theme.of(context).colorScheme.onSurface,
-                ),
-              ),
-              SizedBox(
-                child: song != null
-                    ? Text(song!.length.toHumanizedString(),
                         style: Theme.of(context).textTheme.bodySmall)
                     : const Text('-'),
               ),
@@ -325,37 +242,22 @@ class _PlaybackControls extends StatelessWidget {
 }
 
 class _AlbumArt extends StatelessWidget {
-  const _AlbumArt({
-    required this.song,
-  });
-
-  final Song? song;
+  const _AlbumArt();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
+    return const Padding(
+      padding: EdgeInsets.all(8),
       child: SizedBox(
         width: 70,
         height: 70,
-        child: song != null
-            ? Image.asset(song!.image.image)
-            : Container(
-                color: Colors.pink[100],
-              ),
       ),
     );
   }
 }
 
 class _SongDetails extends StatelessWidget {
-  const _SongDetails({
-    required this.artist,
-    required this.song,
-  });
-
-  final Artist? artist;
-  final Song? song;
+  const _SongDetails();
 
   @override
   Widget build(BuildContext context) {
@@ -364,19 +266,7 @@ class _SongDetails extends StatelessWidget {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              song != null ? song!.title : '-',
-              style: context.labelLarge!.copyWith(fontSize: 12),
-              overflow: TextOverflow.clip,
-              maxLines: 1,
-            ),
-            Text(
-              artist != null ? artist!.name : '-',
-              style: context.labelSmall!.copyWith(fontSize: 8),
-              overflow: TextOverflow.clip,
-            ),
-          ],
+          children: [],
         );
       },
     );

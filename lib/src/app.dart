@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import 'providers/theme.dart';
+import 'shared/providers/theme.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
